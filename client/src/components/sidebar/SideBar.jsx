@@ -8,6 +8,7 @@ import {
   MoreVert,
   SearchOutlined,
 } from "@mui/icons-material";
+import SideBarChat from "../sidebar-chat/SideBarChat";
 
 const SideBar = () => {
   const [{ user }] = useData();
@@ -34,7 +35,10 @@ const SideBar = () => {
         </div>
       </div>
       <div className="sidebar__chats">
-
+        <SideBarChat />
+        <SideBarChat />
+        <SideBarChat />
+        <SideBarChat />
       </div>
     </div>
   );
