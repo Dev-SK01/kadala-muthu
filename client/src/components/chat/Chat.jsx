@@ -9,12 +9,19 @@ import {
 } from "@mui/icons-material";
 const Chat = () => {
   const [seed, setSeed] = useState("");
+  const [message , setMessage] = useState("");
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
 
+  const sendMessage = async(e)=>{
+      e.preventDefault();
+      console.log(message);
+  }
+
   return (
+
     <div className="chat">
       <div className="chat__header">
         <Avatar
@@ -58,8 +65,13 @@ const Chat = () => {
       <div className="chat__footer">
         <InsertEmoticon />
         <form>
-          <input type="text" placeholder="Type a Message" />
-          <button>Send Message</button>
+          <input 
+          type="text" 
+          placeholder="Type a Message" 
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+          />
+          <button onClick={sendMessage}>Send Message</button>
         </form>
       </div>
     </div>
