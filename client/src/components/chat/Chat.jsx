@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./chat.css";
 import { Avatar, IconButton } from "@mui/material";
-import {
-  AttachFile,
-  InsertEmoticon,
-  MoreVert,
-  SearchOutlined,
-} from "@mui/icons-material";
+import {AttachFile,InsertEmoticon,MoreVert,SearchOutlined} from "@mui/icons-material";
 import axios from "axios";
 import { useData } from "../contextAPI/DataProvider";
 import { useParams } from "react-router-dom";
 const Chat = () => {
-  
+
   const [seed, setSeed] = useState("");
   const [message, setMessage] = useState("");
   const [groupName, setGroupName] = useState("");
@@ -51,6 +46,14 @@ const Chat = () => {
         groupId: roomId,
       });
       setMessage("");
+      const updatedMessage = {
+        message: message,
+        name: user.displayName,
+        updatedAt: new Date(),
+        uid: user.uid,
+        groupId: roomId,
+      }
+      setGroupMessages([...groupMessages,updatedMessage]);
     }
   };
 

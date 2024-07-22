@@ -21,6 +21,22 @@ const SideBar = () => {
     });
   }, []);
 
+  const createGroup = async () => {
+    const groupName = prompt("Enter A Group Name");
+    if (groupName) {
+      try {
+        const groupData = await axios.post(
+          "http://localhost:2500/group/create",
+          {
+            groupName: groupName,
+          }
+        );
+       setGroups([...groups,groupData.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -44,9 +60,9 @@ const SideBar = () => {
         </div>
       </div>
       <div className="sidebar__chats">
-        <SideBarChat addNewChat />
+        <SideBarChat addNewChat createGroup={createGroup}/>
         {groups.map((group) => (
-          <SideBarChat key={group._id} id={group._id} name={group.name} />
+          <SideBarChat key={group._id} id={group._id} name={group.name} createGroup={createGroup}/>
         ))}
       </div>
     </div>

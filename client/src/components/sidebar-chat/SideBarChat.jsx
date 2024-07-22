@@ -4,25 +4,14 @@ import { Avatar } from "@mui/material";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const SideBarChat = ({ addNewChat, name, id }) => {
+const SideBarChat = ({ addNewChat, name, id ,createGroup}) => {
   const [seed, setSeed] = useState("");
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
 
-  const createGroup = async () => {
-    const groupName = prompt("Enter A Group Name");
-    if (groupName) {
-      try {
-        await axios.post("http://localhost:2500/group/create", {
-          groupName: groupName,
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
+
 
   return !addNewChat ? (
     

@@ -62,7 +62,7 @@ app.post('/message/new', async (req, res) => {
     if (message) {
         try {
             const msg = await msgDB.create(message);
-            console.log(msg);
+            // console.log(msg);
             res.status(201).send(msg);
         } catch (err) {
             console.log(err.message);
