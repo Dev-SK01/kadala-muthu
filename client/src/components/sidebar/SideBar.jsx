@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { Avatar, IconButton } from "@mui/material";
 import { useData } from "../contextAPI/DataProvider";
@@ -9,9 +9,18 @@ import {
   SearchOutlined,
 } from "@mui/icons-material";
 import SideBarChat from "../sidebar-chat/SideBarChat";
+import axios from "axios";
 
 const SideBar = () => {
   const [{ user }] = useData();
+  const [groups, setGroups] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:2500/all/groups").then((res) => {
+      setGroups(res.data);
+    });
+  }, []);
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -36,9 +45,9 @@ const SideBar = () => {
       </div>
       <div className="sidebar__chats">
         <SideBarChat addNewChat />
-        <SideBarChat />
-        <SideBarChat />
-        <SideBarChat />
+        {groups.map((group) => (
+          <SideBarChat key={group._id} id={group._id} name={group.name} />
+        ))}
       </div>
     </div>
   );

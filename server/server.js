@@ -27,6 +27,36 @@ app.get('/', async (req, res) => {
     res.status(200).send(data);
 });
 
+// route for get the single group
+app.get('/rooms/:id' , async (req,res)=>{
+    try{
+      const group = await groupDB.find({_id:req.params.id});
+      res.status(200).send(group[0]);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+});
+
+// route for get all groups
+app.get('/all/groups', async (req, res) => {
+    try {
+        const groups = await groupDB.find({});
+        res.status(200).send(groups);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
+app.get('/messages/:id' , async (req,res)=>{
+    try{
+      const message = await msgDB.find({groupId:req.params.id});
+      res.status(200).send(message);
+    }catch(err){
+        res.status(500).send(err.message);
+    }
+})
+
+// route for post new message
 app.post('/message/new', async (req, res) => {
     const message = req.body;
     if (message) {
