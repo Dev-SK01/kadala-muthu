@@ -5,6 +5,8 @@ import {AttachFile,InsertEmoticon,MoreVert,SearchOutlined} from "@mui/icons-mate
 import axios from "axios";
 import { useData } from "../contextAPI/DataProvider";
 import { useParams } from "react-router-dom";
+import Pusher from 'pusher-js'
+
 const Chat = () => {
 
   const [seed, setSeed] = useState("");
@@ -31,6 +33,18 @@ const Chat = () => {
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
+
+  // realtime message sending using pusher
+  useEffect(()=>{
+    const pusher = new Pusher('e58366e9cc404c5fcd77', {
+     cluster: 'ap2'
+   });
+   
+   const roomChannel = pusher.subscribe('messages');
+   roomChannel.bind('inserted', (MessageData) => {
+     setGroupMessages((prevMessagesData)=>[...prevMessagesData , MessageData]);
+   });
+ },[]);
 
   // send message function
   const sendMessage = async (e) => {
@@ -86,6 +100,7 @@ const Chat = () => {
           </IconButton>
         </div>
       </div>
+      {/* realtime message sending pusher */}
       <div className="chat__body">
         {groupMessages.map((msg, index) => (
           <p
@@ -103,7 +118,8 @@ const Chat = () => {
         ))}
       </div>
 
-      <div className="chat__footer">
+     {groupName &&  
+     <div className="chat__footer">
         <InsertEmoticon />
         <form>
           <input
@@ -114,7 +130,7 @@ const Chat = () => {
           />
           <button onClick={sendMessage}>Send Message</button>
         </form>
-      </div>
+      </div>}
     </div>
   );
 };

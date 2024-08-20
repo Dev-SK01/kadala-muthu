@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import SideBarChat from "../sidebar-chat/SideBarChat";
 import axios from "axios";
-
+import Pusher from 'pusher-js'
 const SideBar = () => {
   const [{ user }] = useData();
   const [groups, setGroups] = useState([]);
@@ -20,6 +20,20 @@ const SideBar = () => {
       setGroups(res.data);
     });
   }, []);
+  
+  // pusher for realtime groups creation
+  useEffect(()=>{
+     const pusher = new Pusher('e58366e9cc404c5fcd77', {
+      cluster: 'ap2'
+    });
+    
+    const roomChannel = pusher.subscribe('groups');
+    roomChannel.bind('inserted', (groupData) => {
+      setGroups((prevgroupsData)=>[...prevgroupsData , groupData])
+    });
+  },[]);
+
+  
 
   const createGroup = async () => {
     const groupName = prompt("Enter A Group Name");
